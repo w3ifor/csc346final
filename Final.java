@@ -7,17 +7,22 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class Final {
     public static void main(String[]args){
-            String web="http://eoddata.com/stocklist/NASDAQ/A.htm";
-        try {
-            getData(web);
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (char alphabet = 'A'; alphabet <= 'Z'; alphabet++) {
+            String web="http://eoddata.com/stocklist/NASDAQ/"+alphabet+".htm";
+            try {
+                getData(web);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
 //        Sqlite db=new Sqlite();
 //        db.makeConnection("data.db");
 //        if (db.makeConnection("data.db")) {//if connected add data to database.
@@ -42,6 +47,9 @@ public class Final {
     public static void getData(String website)throws Exception{
         ArrayList<Company> company=new ArrayList<Company>();
         Company comp=new Company();
+        String tableName="company";
+        String column1Name="shortName";
+        String column2Name="fullName";
         java.sql.Connection con = getConnection();
         Document doc = Jsoup.connect(website).get();
         Elements names=doc.select("tr.ro");
@@ -51,10 +59,17 @@ public class Final {
             comp.shortName = shortName;
             String fullName = name.select("td").get(1).text();
             comp.fullName = fullName;
-            PreparedStatement posted = con.prepareStatement("INSERT INTO company(fullName,shortname)" +
+            String query = "create table if not exists " + tableName + "(" + column1Name + ", " + column2Name + ")";
+            try {
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate(query);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            PreparedStatement posted = con.prepareStatement("INSERT INTO company(shortName,fullName)" +
                     "VALUES (?,?)");
-            posted.setString(1,comp.fullName);
-            posted.setString(2,comp.shortName);
+            posted.setString(1,comp.shortName);
+            posted.setString(2,comp.fullName);
             posted.executeUpdate();
             company.add(comp);
         }
