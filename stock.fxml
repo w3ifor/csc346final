@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--This is for the first window scene to input stock-->
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -8,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" prefHeight="256.0" prefWidth="486.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StockController">
+<GridPane alignment="center" hgap="10" prefHeight="600.0" prefWidth="800.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StockController">
     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="155.0" text="Stock Symbol Articles:" GridPane.columnIndex="3" GridPane.rowIndex="1">
         <font>
             <Font name="System Bold Italic" size="14.0" />
